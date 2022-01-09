@@ -24,6 +24,7 @@ server <- function(input, output, session) {
   
   rv <- reactiveValues(
     data = tibble(),
+    clean_data = tibble(),
     colStatus = NULL
   )
   
@@ -54,6 +55,9 @@ server <- function(input, output, session) {
   })
   observeEvent(c(input$confirmColView, input$confirmColView2), {
     updateCollapse(session, "data", close = "cols")
+  })
+  observeEvent(rv$data, {
+    rv$colStatus <- NULL
   })
   
   
@@ -137,7 +141,7 @@ server <- function(input, output, session) {
       # check if no column selected
       if (input[[inputId]] == "NA") {
         msg <- list(span("No column specified.", style = "color:orange"))
-        rv$colStatus[[paste0("col", i)]] <- F
+        rv$colStatus[i] <- F
         return(msg)
       }
       
@@ -182,10 +186,9 @@ server <- function(input, output, session) {
       
       if (is.null(msg)) {
         msg <- list(span(strong("OK"), style = "color:blue"))
-        rv$colStatus[[paste0("col", i)]] <- T
-        
+        rv$colStatus[i] <- T
       } else {
-        rv$colStatus[[paste0("col", i)]] <- F
+        rv$colStatus[i] <- F
       }
       
       list(p(ui), p(msg))
@@ -218,11 +221,21 @@ server <- function(input, output, session) {
   # observe({print(cleanData())})
   
   
+  # Build clean dataframe ----
+  
+  # observeEvent(rv$colStatus, {
+  #   df <- rv$data
+  #   for (i in 1:nCols) {
+  #     if (rv$colStatus[i] == T) {
+  #       df <- rename(df, )
+  #     }
+  #   }
+  # })
   
   # Model readiness ----
   checkModelReadiness <- function(col) {
     compare <- sapply(1:nCols, function(i) {
-      test <- (col[i] == T & rv$colStatus[[paste0("col", i)]] == T) | (col[i] == F)
+      test <- (col[i] == T & rv$colStatus[i] == T) | (col[i] == F)
       if (length(test) == 0) {F} else {test}
     })
     !(F %in% compare)
@@ -308,7 +321,7 @@ server <- function(input, output, session) {
   
   germTrtChoices <- reactive({
     cols <- sapply(1:nCols, function(i) {
-      if (rv$colStatus[[paste0("col", i)]] == T && columnValidation$Role[i] == "Factor") columnValidation$Column[i]
+      if (rv$colStatus[i] == T && columnValidation$Role[i] == "Factor") columnValidation$Column[i]
     })
     cols <- compact(cols)
     setNames(as.list(c(NA, cols)), c("Not specified", cols))
@@ -427,7 +440,7 @@ server <- function(input, output, session) {
   
   germSpeedTrtChoices <- reactive({
     cols <- sapply(1:nCols, function(i) {
-      if (rv$colStatus[[paste0("col", i)]] == T && columnValidation$Role[i] == "Factor") columnValidation$Column[i]
+      if (rv$colStatus[i] == T && columnValidation$Role[i] == "Factor") columnValidation$Column[i]
     })
     cols <- compact(cols)
   })
