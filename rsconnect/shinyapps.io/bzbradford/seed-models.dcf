@@ -1,0 +1,13 @@
+name: seed-models
+title: seed-models
+username:
+account: bzbradford
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4398166
+bundleId: 4832138
+url: https://bzbradford.shinyapps.io/seed-models/
+when: 1626648573.93696
+lastSyncTime: 1626648573.93696
+asMultiple: FALSE
+asStatic: FALSE

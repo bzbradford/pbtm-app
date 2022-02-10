@@ -10,4 +10,4 @@ GermTemp,Measured germination temperature (Celcius),Number (0-100),Thermal and h
 GermPromoterDosage,Measured concentration of the germination promoter,Positive number,Promoter model
 GermInhibitorDosage,Measured concentration of the germination inhibitor,Positive number,Inhibitor model
 CumTime,Cumulative elapsed time (hours),Positive number,All models
-CumFraction,Cumulative germinated fraction,Number (0-1),All models
+CumFrac,Cumulative germinated fraction,Number (0-1),All models

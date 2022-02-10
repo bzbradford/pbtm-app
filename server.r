@@ -56,9 +56,9 @@ server <- function(input, output, session) {
   observeEvent(c(input$confirmColView, input$confirmColView2), {
     updateCollapse(session, "data", close = "cols")
   })
-  observeEvent(rv$data, {
-    rv$colStatus <- NULL
-  })
+  # observeEvent(rv$data, {
+  #   rv$colStatus <- NULL
+  # })
   
   
   
@@ -231,6 +231,38 @@ server <- function(input, output, session) {
   #     }
   #   }
   # })
+  
+  # TODO: this keeps freezing R
+  # watch the column assignments and statuses
+  # observe(
+  #   list(
+  #     lapply(1:nCols, function(i) {input[[columnValidation$InputId[i]]]})
+  #   ), {
+  #     req(length(rv$colStatus) == nCols)
+  #     cat("\nStatus change:\n")
+  #     cols <- list()
+  #     for (i in 1:nCols) {
+  #       newName <- columnValidation$InputId[i]
+  #       oldName <- input[[newName]]
+  #       ok <- rv$colStatus[i]
+  #       # print(paste(i, ":", oldName, "->", newName, ok))
+  #       if (ok) {
+  #         cols[[newName]] <- oldName
+  #       }
+  #     }
+  #     # print(cols)
+  #     # print(unlist(cols))
+  #     if (length(cols) > 0) {
+  #       df <- rv$data %>%
+  #         select(unlist(cols)) %>%
+  #         rename(!!! cols)
+  #       rv$clean_data <- df
+  #       print(df)
+  #     } else {
+  #       rv$clean_data <- tibble()
+  #     }
+  #   }
+  # )
   
   # Model readiness ----
   checkModelReadiness <- function(col) {
